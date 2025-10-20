@@ -1,44 +1,51 @@
 {
-    description = "Hakiz-nix Flake";
+  description = "Hakiz-nix Flake";
 
-    inputs = {
-        nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
-        home-manager = {
-            url = "github:nix-community/home-manager/master";
-            inputs.nixpkgs.follows = "nixpkgs";
-        };
+  inputs = {
+    # nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
+  };
 
-    outputs = { self, nixpkgs, home-manager, ... }@inputs: let
-    system = "x86_64-linux";
-    pkgs = nixpkgs.legacyPackages.${system};
+  outputs = { self, nixpkgs, home-manager, ... }@inputs:
+    let
+      system = "x86_64-linux";
+      pkgs = nixpkgs.legacyPackages.${system};
+      # pkgs = import nixpkgs { inherit system; };
     in {
-        nixosConfigurations= {
+      nixosConfigurations = {
+        #vm just a demo not use
+        vm = nixpkgs.lib.nixosSystem {
+          inherit system;
+          modules = [
+            ./system/configuration.nix
 
-            #vm just a demo not use
-            vm = nixpkgs.lib.nixosSystem {
-                system = "x86_64-linux";
-                modules = [ 
-                    ./system/configuration.nix
-        
-                    home-manager.nixosModules.home-manager
-                    {
-                        home-manager.useGlobalPkgs = true;
-                        home-manager.useUserPackages = true;
-                        home-manager.users.hakiz = import ./home/hakiz-vm.nix;
-                    }
-                ];
-            };
-
-        }; 
-
-        #nix run ~/hakiz-nix#homeConfigurations.wsl.activationPackage
-        homeConfigurations = {
-            wsl = home-manager.lib.homeManagerConfiguration {
-                inherit pkgs;
-                modules = [ ./home/wsl-home.nix ];
-                extraSpecialArgs = { inherit inputs; };
-            };
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.hakiz = import ./home/hakiz-vm.nix;
+            }
+          ];
         };
+      };
+
+      #nix run ~/hakiz-nix#homeConfigurations.linux.activationPackage
+      homeConfigurations = {
+        "linux" = home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules = [ ./home/linux-home.nix ];
+          extraSpecialArgs = { inherit inputs; };
+        };
+
+        "wsl" = home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules = [ ./home/wsl-home.nix ];
+          extraSpecialArgs = { inherit inputs; };
+        };
+      };
     };
 }
