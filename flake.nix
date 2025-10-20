@@ -40,12 +40,6 @@
           modules = [ ./home/linux-home.nix ];
           extraSpecialArgs = { inherit inputs; };
         };
-
-        "wsl" = home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-          modules = [ ./home/wsl-home.nix ];
-          extraSpecialArgs = { inherit inputs; };
-        };
       };
     };
 }
