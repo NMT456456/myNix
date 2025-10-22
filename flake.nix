@@ -33,7 +33,7 @@
         };
       };
 
-      #nix run ~/hakiz-nix#homeConfigurations.linux.activationPackage
+      #nix run ~/myNix#homeConfigurations.linux.activationPackage
       homeConfigurations = {
         "linux" = home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
