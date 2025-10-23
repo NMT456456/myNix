@@ -3,6 +3,7 @@
 {
   programs.zsh = {
     enable = true;
+    enableCompletion = true;
     oh-my-zsh = {
       enable = true;
       plugins = [ ];
@@ -53,15 +54,12 @@
 
       #single-user nix
       . ~/.nix-profile/etc/profile.d/nix.sh
+      #path for site-functions
+      fpath=("$HOME/.nix-profile/share/zsh/site-functions" $fpath)
 
       source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
       source ${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh
       source ${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-      unalias vi 2>/dev/null
-      unalias vis 2>/dev/null
-      unalias nixbuild 2>/dev/null
-      unalias nixbuilds 2>/dev/null
 
       export TERM=xterm-256color
       export COLORTERM=truecolor
