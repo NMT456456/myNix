@@ -3,11 +3,13 @@
 {
   imports = [ ../modules/tmux.nix ../modules/zsh.nix ];
 
-  home.username = "hakiz";
-  home.homeDirectory = "/home/hakiz";
-  home.stateVersion = "25.05";
+  home = {
+    username = "hakiz";
+    homeDirectory = "/home/hakiz";
+    stateVersion = "25.05";
 
-  home.file.".config/nvim".source = ../dotfiles/nvim;
+    file.".config/nvim".source = ../dotfiles/nvim;
+  };
 
   programs.git = {
     enable = true;
@@ -32,6 +34,7 @@
     fzf
     zoxide
     tree-sitter
+    statix
     unzip
     cargo
     nodejs

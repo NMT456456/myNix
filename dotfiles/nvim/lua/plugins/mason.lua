@@ -6,7 +6,6 @@ return {
 				-- Python
 				-- "black",
 				-- "isort",
-
 				-- "mypy",
 
 				-- Nix
