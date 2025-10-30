@@ -10,71 +10,65 @@
     };
   };
 
-  programs.tmux = {
-    enable = true;
+  home.file.".config/tmux/tmux.conf".text = ''
+    set -g default-terminal "tmux-256color"
+    set -ag terminal-overrides ",xterm-256color:RGB"
 
-    plugins = with pkgs.tmuxPlugins; [ sensible ];
+    set -g prefix C-z
+    unbind C-b
+    bind-key C-z send-prefix
 
-    extraConfig = ''
-      set -g default-terminal "tmux-256color"
-      set -ag terminal-overrides ",xterm-256color:RGB"
+    unbind %
+    bind | split-window -h 
 
-      set -g prefix C-z
-      unbind C-b
-      bind-key C-z send-prefix
+    unbind '"'
+    bind - split-window -v
 
-      unbind %
-      bind | split-window -h 
+    unbind r
+    bind r source-file ~/.tmux.conf
 
-      unbind '"'
-      bind - split-window -v
+    bind j resize-pane -D 5
+    bind k resize-pane -U 5
+    bind l resize-pane -R 5
+    bind h resize-pane -L 5
 
-      unbind r
-      bind r source-file ~/.tmux.conf
+    bind -r m resize-pane -Z
 
-      bind j resize-pane -D 5
-      bind k resize-pane -U 5
-      bind l resize-pane -R 5
-      bind h resize-pane -L 5
+    bind M-c attach-session -c "#{pane_current_path}"
 
-      bind -r m resize-pane -Z
+    set -g mouse on
 
-      bind M-c attach-session -c "#{pane_current_path}"
+    set-window-option -g mode-keys vi
 
-      set -g mouse on
+    bind-key -T copy-mode-vi 'v' send -X begin-selection # start selecting text with "v"
+    bind-key -T copy-mode-vi 'y' send -X copy-selection # copy text with "y"
 
-      set-window-option -g mode-keys vi
+    unbind -T copy-mode-vi MouseDragEnd1Pane # don't exit copy mode when dragging with mouse
 
-      bind-key -T copy-mode-vi 'v' send -X begin-selection # start selecting text with "v"
-      bind-key -T copy-mode-vi 'y' send -X copy-selection # copy text with "y"
+    # remove delay for exiting insert mode with ESC in Neovim
+    set -sg escape-time 10
 
-      unbind -T copy-mode-vi MouseDragEnd1Pane # don't exit copy mode when dragging with mouse
+    set -g base-index 1
+    set -g pane-base-index 1
+    set-option -g status-position top
+    set -g @theme_transparent_status_bar 'true'
+    set -g @theme_plugin_datetime_format '%d-%m-%Y'
 
-      # remove delay for exiting insert mode with ESC in Neovim
-      set -sg escape-time 10
+    # tpm plugin
+    set -g @plugin 'tmux-plugins/tpm'
 
-      set -g base-index 1
-      set -g pane-base-index 1
-      set-option -g status-position top
-      set -g @theme_transparent_status_bar 'true'
-      set -g @theme_plugin_datetime_format '%d-%m-%Y'
-
-      # tpm plugin
-      set -g @plugin 'tmux-plugins/tpm'
-
-      # list of tmux plugins
-      set -g @plugin 'christoomey/vim-tmux-navigator'
-      set -g @plugin 'fabioluciano/tmux-tokyo-night'
-      set -g @plugin 'tmux-plugins/tmux-resurrect' # persist tmux sessions after computer restart
-      set -g @plugin 'tmux-plugins/tmux-continuum' # automatically saves sessions for you every 15 minutes
+    # list of tmux plugins
+    set -g @plugin 'christoomey/vim-tmux-navigator'
+    set -g @plugin 'fabioluciano/tmux-tokyo-night'
+    set -g @plugin 'tmux-plugins/tmux-resurrect' # persist tmux sessions after computer restart
+    set -g @plugin 'tmux-plugins/tmux-continuum' # automatically saves sessions for you every 15 minutes
 
 
-      set -g @resurrect-capture-pane-contents 'on'
-      set -g @continuum-restore 'on'
-      set -g @continuum-boot 'on'
+    set -g @resurrect-capture-pane-contents 'on'
+    set -g @continuum-restore 'on'
+    set -g @continuum-boot 'on'
 
-      # Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
-      run '~/.config/tmux/plugins/tpm/tpm'
-    '';
-  };
+    # Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
+    run '~/.config/tmux/plugins/tpm/tpm'
+  '';
 }
