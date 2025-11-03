@@ -20,6 +20,7 @@
 
   home.packages = with pkgs; [
     home-manager
+    superfile
     tmux
     neovim
     fastfetch

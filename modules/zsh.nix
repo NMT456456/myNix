@@ -46,6 +46,7 @@
       tx =
         "tmux has-session -t main 2>/dev/null && tmux attach -t main || tmux";
       lg = "lazygit";
+      spf = "superfile";
     };
 
     initContent = ''
@@ -54,7 +55,7 @@
 
       #single-user nix
       . ~/.nix-profile/etc/profile.d/nix.sh
-      #path for site-functions
+      #path for site-functions ( zsh functions )
       fpath=("$HOME/.nix-profile/share/zsh/site-functions" $fpath)
 
       source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
