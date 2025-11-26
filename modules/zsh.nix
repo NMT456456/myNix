@@ -34,14 +34,14 @@
     };
 
     shellAliases = {
-      ffv =
-        "selected=$(fzf --style=full --preview='bat --color=always {}') && [ -n '$selected' ] && nvim '$selected'";
+      # ffv =
+      #   "selected=$(fzf --style=full --preview='bat --color=always {}') && [ -n '$selected' ] && nvim '$selected'";
+      # cf = "cd '$(zoxide query -l | fzf --style=full)'";
       ls = "eza -1 --icons=always";
       ll = "eza -1 --icons=always -l -a";
       lst = "eza --icons=always -T";
       llt = "eza --icons=always -T -l -a";
       cd = "z";
-      cf = "cd '$(zoxide query -l | fzf --style=full)'";
       cl = "clear";
       tx =
         "tmux has-session -t main 2>/dev/null && tmux attach -t main || tmux";
@@ -61,6 +61,9 @@
       source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
       source ${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh
       source ${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+      alias cf='cd "$(zoxide query -l | fzf --style=full)"'
+      alias ffv='selected=$(fzf --style=full --preview="bat --color=always {}") && [ -n "$selected" ] && nvim "$selected"'
 
       export TERM=xterm-256color
       export COLORTERM=truecolor
