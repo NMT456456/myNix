@@ -46,6 +46,7 @@
       cd = "z";
       cf = "cd '$(zoxide query -l | fzf --style=full)'";
       cl = "clear";
+      bgl = "python ~/myNix/scripts/bg-terminal.py -l";
       tx =
         "tmux has-session -t main 2>/dev/null && tmux attach -t main || tmux new -s main";
       lg = "lazygit";
