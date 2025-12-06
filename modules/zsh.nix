@@ -31,6 +31,9 @@
       nixbuild = ''
         nix run ~/myNix#homeConfigurations.$1.activationPackage
       '';
+      bgc = ''
+        python ~/myNix/scripts/bg-terminal.py -i $1
+      '';
     };
 
     shellAliases = {
@@ -44,7 +47,7 @@
       cd = "z";
       cl = "clear";
       tx =
-        "tmux has-session -t main 2>/dev/null && tmux attach -t main || tmux";
+        "tmux has-session -t main 2>/dev/null && tmux attach -t main || tmux new -s main";
       lg = "lazygit";
       spf = "superfile";
     };
@@ -54,7 +57,7 @@
       bindkey "^[[B" history-search-forward
 
       #single-user nix
-      . ~/.nix-profile/etc/profile.d/nix.sh
+      # . ~/.nix-profile/etc/profile.d/nix.sh
       #path for site-functions ( zsh functions )
       fpath=("$HOME/.nix-profile/share/zsh/site-functions" $fpath)
 
@@ -65,10 +68,10 @@
       alias cf='cd "$(zoxide query -l | fzf --style=full)"'
       alias ffv='selected=$(fzf --style=full --preview="bat --color=always {}") && [ -n "$selected" ] && nvim "$selected"'
 
-      export TERM=xterm-256color
-      export COLORTERM=truecolor
+      # export TERM=xterm-256color
+      # export COLORTERM=truecolor
 
-      [[ ! -f ~/.p10k.zsh ]] || source ~/myNix/dotfiles/.p10k.zsh
+      [[ ! -f ~/myNix/dotfiles/.p10k.zsh ]] || source ~/myNix/dotfiles/.p10k.zsh
 
       eval "$(zoxide init zsh)"
     '';
