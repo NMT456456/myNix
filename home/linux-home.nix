@@ -41,6 +41,7 @@
     unzip
     cargo
     nodejs
+    yarn
     lazygit
   ];
 }
